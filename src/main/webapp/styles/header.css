@@ -1,0 +1,43 @@
+.navbar {
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    overflow: visible;
+}
+
+.navbar a {
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar a:hover {
+    background: #ddd;
+    color: black;
+}
+
+#logout {
+    display: none;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.dropstart:hover>.dropdown-menu {
+    display: block;
+    right: 0;
+}
+
+.dropstart>.dropdown-toggle:active {
+    pointer-events: none;
+}
