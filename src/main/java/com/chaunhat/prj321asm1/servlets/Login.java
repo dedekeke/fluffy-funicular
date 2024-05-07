@@ -24,6 +24,7 @@ public class Login extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPwd = request.getParameter("confirmPassword");
+        boolean isAdmin = request.getParameter("isAdmin") != null;
 
         // Validation
         String errorMessage = "";
@@ -34,11 +35,12 @@ public class Login extends HttpServlet {
             errorMessage = "Passwords do not match";
         }
         if (errorMessage.isBlank() && !name.isEmpty()) {
-            User user = User.createUser(name, email, password, password);
+            User user = User.createUser(name, email, password, password, isAdmin);
 
             HttpSession session = request.getSession();
             session.setAttribute("name", name);
-            session.setAttribute("email", email);
+            session.setAttribute("isAdmin", isAdmin);
+            session.setAttribute("currentUser", user);
             // Redirect to landing page after login
             response.sendRedirect("/");
         } else {

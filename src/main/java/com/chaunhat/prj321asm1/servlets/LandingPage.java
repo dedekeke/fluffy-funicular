@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chaunhat.prj321asm1.model.Product;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -18,7 +19,7 @@ public class LandingPage extends HttpServlet {
         List<Product> products = new ArrayList<>();
         // Change basePath
         // For e.g: C/Project/src/images
-        String basePath = "/images";
+        String basePath = "/Users/bkinm1/Desktop/your_map/temp/Funix/PRJ321/fluffy-funicular/src/main/webapp/images/";
 
         products.add(Product.createProduct("Fan", "Silent Cooling for your PC", 10, Files.readAllBytes(Paths.get(basePath + "fan.jpeg"))));
         products.add(Product.createProduct("Headphone", "Crystal Clear Audio Experience", 20, Files.readAllBytes(Paths.get(basePath + "headphone.jpeg"))));
@@ -30,10 +31,12 @@ public class LandingPage extends HttpServlet {
         products.add(Product.createProduct("VGA", "Display Adapter for Connecting Monitors", 80, Files.readAllBytes(Paths.get(basePath + "vga.jpeg"))));
 
 
+        ServletContext context = getServletContext();
         // Add the list of products to the request attribute
+        context.setAttribute("products", products);
         request.setAttribute("products", products);
 
         // Forward the request to the landing.jsp
-        getServletContext().getRequestDispatcher("/landing.jsp").forward(request, response);
+        context.getRequestDispatcher("/landing.jsp").forward(request, response);
     }
 }
