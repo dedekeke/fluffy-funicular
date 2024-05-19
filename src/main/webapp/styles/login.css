@@ -2,7 +2,11 @@
     border-radius: 50px;
 }
 
-#avatar img {
+#avatar_signup, #avatar_signin {
+    text-align: center;
+}
+
+#avatar_signin img, #avatar_signup img {
     width: 200px;
     height: 200px;
     border-radius: 100px;
@@ -15,20 +19,32 @@
 }
 
 .form-card {
-    width: 30%;
-    border: 1px solid #333;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+    border: 1px solid rgba(355,355,355, 0.1);
+    margin: 0 auto;
+    border-radius: 2px;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 650px;
 }
 
-#loginBtn {
-    width: 100%;
-    margin: 16px auto;
-    font-size: 16px;
-    border-radius: 10px;
+#loginBtn, #signupBtn {
+    margin: 10px auto;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: rgb(72, 76, 122);
+    font-size: 14px;
+    height: 38px;
+    padding: 8px 24px;
+    border-radius: 50px;
+    background-image: linear-gradient(180deg,#fff,#f5f5fa);
+    box-shadow: 0 4px 11px 0 rgb(37 44 97 / 15%), 0 1px 3px 0 rgb(93 100 148 / 20%);
+    transition: all .2s ease-out;
+}
+
+#loginBtn:hover{
+    box-shadow: 0 8px 22px 0 rgb(37 44 97 / 15%), 0 4px 6px 0 rgb(93 100 148 / 20%);
 }
 
 input {
@@ -42,7 +58,14 @@ input {
     outline: 0;
     font-family: inherit;
     font-size: 0.95em;
-    margin: 10px 0;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input[type = "checkbox"] {
+    margin-top: 8px;
 }
 
 #errors {
@@ -50,3 +73,46 @@ input {
     background-color: #ff4545;
     color: white;
 }
+
+.background_1 {
+    height: 100vh;
+    background-image: url("https://wallpapers.com/images/hd/dark-gradient-8km5m3gxmp08ny0f.jpg");
+}
+
+.tab-container {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+}
+
+.nav-tabs {
+    border-bottom: none;
+    width: 100%;
+}
+
+.nav-tabs .nav-item {
+    flex: 1;
+}
+
+.nav-tabs .nav-link {
+    width: 100%;
+    color: #adb5bd;
+    border-color: #495057 #495057 transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: #e9ecef;
+    border-color: #495057 #495057 transparent;
+}
+
+.nav-link:hover {
+    color: black !important;
+}
+
+.checkboxBtn {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+
