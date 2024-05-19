@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.*;
 public class Logout extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        getServletContext().setInitParameter("isLoggedIn", "false");
         HttpSession session = request.getSession();
         session.invalidate();
         response.sendRedirect("/");

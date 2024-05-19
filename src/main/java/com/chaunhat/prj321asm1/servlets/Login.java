@@ -1,16 +1,20 @@
 package com.chaunhat.prj321asm1.servlets;
 
 import java.io.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import com.chaunhat.prj321asm1.model.User;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class Login extends HttpServlet {
+    // TODO: add cookie!
     private Pattern emailPattern;
+    protected List<User> userList;
 
     @Override
     public void init() throws ServletException {
@@ -41,6 +45,12 @@ public class Login extends HttpServlet {
             session.setAttribute("name", name);
             session.setAttribute("isAdmin", isAdmin);
             session.setAttribute("currentUser", user);
+
+            userList.add(user);
+            ServletContext context = getServletContext();
+            context.setAttribute("isLoggedIn", true);
+            context.setAttribute("userList", userList);
+
             // Redirect to landing page after login
             response.sendRedirect("/");
         } else {

@@ -41,7 +41,7 @@
     pointer-events: none;
 }
 
-.home_btn svg{
+.home_btn i {
     padding: 15px;
     width: 100%;
     height: 100%;

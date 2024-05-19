@@ -1,5 +1,5 @@
 <footer class="bg-dark bg-gradient">
-    <div class="container p-5">
+    <div class="container p-5 text-light    ">
         <div class="d-flex justify-content-between">
             <div>
                 <h3>&copy; 2024 Our Website. All Rights Reserved.</h3>
