@@ -1,7 +1,7 @@
 <%@ page import="java.util.*, javax.servlet.http.*" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <header>
-    <div class="navbar bg-dark bg-gradient"Ò>
+    <div class="navbar bg-dark bg-gradient bg-opacity-75">
         <div id="home_div">Home</div>
         <div id="userInfo"></div>
     </div>

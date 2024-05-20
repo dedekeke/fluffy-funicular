@@ -3,6 +3,7 @@ package com.chaunhat.prj321asm1.servlets;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import com.chaunhat.prj321asm1.model.User;
@@ -13,7 +14,6 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class Login extends HttpServlet {
-    // TODO: add cookie!
     protected  ServletContext context;
     private Pattern emailPattern;
     protected List<User> userList;
@@ -62,6 +62,42 @@ public class Login extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            if (userList == null || userList.isEmpty()) {
+                context.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            }
+            UUID userId = (UUID) context.getAttribute("lastUserLoggedIn");
+            for (Cookie cookie : cookies) {
+                if (userId == null) break;
+                if (cookie.getName().equals(userId.toString())) {
+                    String[] userInfo = cookie.getValue().split("\\|");
+                    String email = userInfo[0];
+                    String password = userInfo[1];
+
+                    // Authenticate the user based on the email and password from the cookie
+                    User user = User.findUser(email, password, userList);
+                    if (user != null) {
+                        // Set the user's information in the session
+                        HttpSession session = request.getSession();
+                        session.setAttribute("name", user.name());
+                        session.setAttribute("isAdmin", user.isAdmin());
+
+                        request.setAttribute("email", user.email());
+                        request.setAttribute("password", user.password());
+
+                        context.setAttribute("isLoggedIn", true);
+                        context.setAttribute("lastUserLoggedIn", user.id());
+
+                        context.getRequestDispatcher("/login.jsp").forward(request, response);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // If the user is not authenticated or the cookie doesn't exist, show the login page
         context.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
@@ -109,6 +145,14 @@ public class Login extends HttpServlet {
             session.setAttribute("name", user.name());
             session.setAttribute("isAdmin", user.isAdmin());
             context.setAttribute("isLoggedIn", true);
+            // Check if the "rememberMe" checkbox is checked
+            if (rememberMe) {
+                // Create a cookie with the user's email and password
+                context.setAttribute("lastUserLoggedIn", user.id());
+                Cookie userCookie = new Cookie(user.id().toString(), user.email() + "|" + user.password());
+                userCookie.setMaxAge(60 * 60 * 24 * 30); // Set the cookie to expire in 30 days
+                response.addCookie(userCookie);
+            }
             response.sendRedirect("/");
         } else {
             request.setAttribute("invalidCredential", invalidCredential);

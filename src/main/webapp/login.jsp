@@ -38,9 +38,14 @@
                                 <img src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.553209589.1714435200&semt=sph" alt="Avatar">
                             </div>
                             <label for="email_signin" class="form-label">Email</label>
-                            <input type="email" name="email" id="email_signin" placeholder="Email" class="form-control" required>
+                            <input type="email" name="email" id="email_signin" value="${requestScope.email}" placeholder="Email" class="form-control" required>
                             <label for="password_signin" class="form-label">Password</label>
-                            <input type="password" name="password" id="password_signin" placeholder="Password" class="form-control" required>
+                            <input type="password" name="password" id="password_signin" value="${requestScope.password}" placeholder="Password" class="form-control" required>
+
+                            <div class="d-flex align-items-start">
+                                <input type="checkbox" name="rememberMe" id="rememberMe" class="checkboxBtn">
+                                <label for="rememberMe" class="w-100">Remember sign in?</label>
+                            </div>
                             <% String invalidCredential = (String) request.getAttribute("invalidCredential"); %>
                             <% if (invalidCredential != null) { %>
                             <div id="loginError" class="w-100 border border-1 border-danger rounded-pill text-light p-1 text-center bg-transparent mt-2">
@@ -72,10 +77,6 @@
                             <div class="d-flex align-items-start">
                                 <input type="checkbox" name="isAdmin" id="isAdmin" class="checkboxBtn">
                                 <label for="isAdmin" class="w-100">Admin?</label>
-                            </div>
-                            <div class="d-flex align-items-start">
-                                <input type="checkbox" name="rememberMe" id="rememberMe" class="checkboxBtn">
-                                <label for="rememberMe" class="w-100">Remember sign in?</label>
                             </div>
 
                             <div class="w-100 d-flex justify-content-center"><button type="submit" id="signupBtn">Sign Up</button></div>

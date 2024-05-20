@@ -14,6 +14,22 @@
 <%@ include file="header.jsp" %>
 
 <% ServletContext context = request.getServletContext(); %>
+<%
+    if (isLoggedIn) {
+%>
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <div class="toast text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" id="loggin-toast">
+            <div class="toast-body">
+                Welcome back, <%= name%>
+            </div>
+        </div>
+    </div>
+</div>
+<%
+    }
+%>
+
 <% List<Product> products = (List<Product>) context.getAttribute("products"); %>
 <% int currentPage = 1; %>
 <% int pageSize = 4; %>
@@ -132,5 +148,14 @@
 
 <%@ include file="footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<%--script for toasting welcome message--%>
+<script>
+    const toast = document.getElementById('loggin-toast');
+    const toastBS = new bootstrap.Toast(toast);
+
+    <% if (isLoggedIn) { %>
+        toastBS.show();
+    <% } %>
+</script    >
 </body>
 </html>
