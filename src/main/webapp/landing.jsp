@@ -1,17 +1,36 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List, com.chaunhat.prj321asm1.model.Product" %>
 <%@ page import="java.util.Base64" %>
+<%@ page import="jakarta.servlet.ServletContext" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Home</title>
     <%@ include file="includes.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="header.jsp" %>
 
-<% List<Product> products = (List<Product>) request.getAttribute("products"); %>
+<% ServletContext context = request.getServletContext(); %>
+<%
+    if (isLoggedIn) {
+%>
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <div class="toast text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" id="loggin-toast">
+            <div class="toast-body">
+                Welcome back, <%= name%>
+            </div>
+        </div>
+    </div>
+</div>
+<%
+    }
+%>
+
+<% List<Product> products = (List<Product>) context.getAttribute("products"); %>
 <% int currentPage = 1; %>
 <% int pageSize = 4; %>
 
@@ -129,5 +148,14 @@
 
 <%@ include file="footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<%--script for toasting welcome message--%>
+<script>
+    const toast = document.getElementById('loggin-toast');
+    const toastBS = new bootstrap.Toast(toast);
+
+    <% if (isLoggedIn) { %>
+        toastBS.show();
+    <% } %>
+</script    >
 </body>
 </html>

@@ -2,7 +2,6 @@ package com.chaunhat.prj321asm1.servlets;
 
 import java.io.*;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -10,6 +9,7 @@ import jakarta.servlet.annotation.*;
 public class Logout extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        getServletContext().setAttribute("isLoggedIn", "false");
         HttpSession session = request.getSession();
         session.invalidate();
         response.sendRedirect("/");
