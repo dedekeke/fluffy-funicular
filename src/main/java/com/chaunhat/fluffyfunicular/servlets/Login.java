@@ -1,4 +1,4 @@
-package com.chaunhat.prj321asm1.servlets;
+package com.chaunhat.fluffyfunicular.servlets;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import com.chaunhat.prj321asm1.model.User;
+import com.chaunhat.fluffyfunicular.model.User;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;

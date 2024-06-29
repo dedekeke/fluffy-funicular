@@ -3,9 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
+    <context-param>
+        <param-name>DBURL</param-name>
+        <param-value>jdbc:postgresql://localhost:5432/fluffy-funicular</param-value>
+    </context-param>
+    <context-param>
+        <param-name>DBUSER</param-name>
+        <param-value>chaunhat</param-value>
+    </context-param>
+    <context-param>
+        <param-name>DBPWD</param-name>
+        <param-value></param-value>
+    </context-param>
+    <listener>
+        <listener-class>com.chaunhat.fluffyfunicular.listener.AppContextListener</listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.chaunhat.prj321asm1.servlets.Login</servlet-class>
+        <servlet-class>com.chaunhat.fluffyfunicular.servlets.Login</servlet-class>
         <init-param>
             <param-name>emailRegex</param-name>
             <param-value>^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$</param-value>

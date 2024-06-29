@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login/Sign Up</title>
+    <title>Login</title>
     <style>
         <%@ include file="/styles/login.css" %>
     </style>

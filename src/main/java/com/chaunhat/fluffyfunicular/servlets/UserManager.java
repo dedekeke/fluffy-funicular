@@ -1,4 +1,4 @@
-package com.chaunhat.prj321asm1.servlets;
+package com.chaunhat.fluffyfunicular.servlets;
 
 import java.io.*;
 

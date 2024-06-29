@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List, com.chaunhat.prj321asm1.model.Product" %>
+<%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="jakarta.servlet.ServletContext" %>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
     }
 %>
 
-<% List<Product> products = (List<Product>) context.getAttribute("products"); %>
+<% List<Product> products = (List<Product>) request.getAttribute("products"); %>
 <% int currentPage = 1; %>
 <% int pageSize = 4; %>
 
@@ -148,7 +148,6 @@
 
 <%@ include file="footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-<%--script for toasting welcome message--%>
 <script>
     const toast = document.getElementById('loggin-toast');
     const toastBS = new bootstrap.Toast(toast);

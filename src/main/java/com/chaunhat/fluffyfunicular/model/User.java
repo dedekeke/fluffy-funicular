@@ -1,4 +1,4 @@
-package com.chaunhat.prj321asm1.model;
+package com.chaunhat.fluffyfunicular.model;
 
 import java.util.List;
 import java.util.UUID;
