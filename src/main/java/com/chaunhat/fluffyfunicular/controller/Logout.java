@@ -1,4 +1,4 @@
-package com.chaunhat.fluffyfunicular.servlets;
+package com.chaunhat.fluffyfunicular.controller;
 
 import java.io.*;
 

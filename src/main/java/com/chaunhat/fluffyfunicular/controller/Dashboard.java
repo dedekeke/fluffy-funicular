@@ -1,7 +1,7 @@
-package com.chaunhat.fluffyfunicular.servlets;
+package com.chaunhat.fluffyfunicular.controller;
 
 import com.chaunhat.fluffyfunicular.model.Product;
-import com.chaunhat.fluffyfunicular.service.ProductService;
+import com.chaunhat.fluffyfunicular.dao.ProductDAO;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,18 +17,20 @@ import java.util.List;
 
 @WebServlet(name = "DashboardServlet", value = "/dashboard")
 public class Dashboard extends HttpServlet {
-    private ProductService productService;
+    private ProductDAO productDAO;
 
     public void init() {
-        productService = new ProductService();
+        productDAO = new ProductDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (ServletFileUpload.isMultipartContent((javax.servlet.http.HttpServletRequest) request)) {
             try {
                 Product product = handleFileUpload(request);
-                productService.insertProduct(product);
-                request.setAttribute("infoMessage", "Product added successfully!");
+                if (product != null) {
+                    productDAO.insertProduct(product);
+                    request.setAttribute("infoMessage", "Product added successfully!");
+                }
             } catch (Exception e) {
                 request.setAttribute("errorMessage", "Failed to add product: " + e.getMessage());
             }
@@ -65,7 +67,7 @@ public class Dashboard extends HttpServlet {
                 }
             }
         }
-        return new Product(0, name, description, quantity, price, image); //temp
+        return null; //temp
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -76,7 +78,7 @@ public class Dashboard extends HttpServlet {
 
         if (isLoggedIn != null && isLoggedIn && isAdmin) {
             try {
-                List<Product> products = productService.getAllProducts();  // Get all products from the database
+                List<Product> products = productDAO.getAllProducts();  // Get all products from the database
                 request.setAttribute("products", products);
                 request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
             } catch (Exception e) {

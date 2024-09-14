@@ -1,4 +1,4 @@
-package com.chaunhat.fluffyfunicular.servlets;
+package com.chaunhat.fluffyfunicular.controller;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -48,7 +48,8 @@ public class Login extends HttpServlet {
         } else {
             userList = (List<User>) context.getAttribute("userList");
         }
-
+        // TODO: split sign in and sign up
+        // TODO: change the logic of sign in
         if (action != null && action.equals("signup")) {
             // Sign-up request
             handleSignup(request, response);

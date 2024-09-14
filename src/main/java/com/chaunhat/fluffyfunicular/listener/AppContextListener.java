@@ -15,16 +15,6 @@ public class AppContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext ctx = servletContextEvent.getServletContext();
 
-        // Initialize database connection
-//        CREATE TABLE products (
-//                id SERIAL PRIMARY KEY,
-//                name VARCHAR(255),
-//                description TEXT,
-//                quantity INT,
-//                price NUMERIC(10, 2),
-//                image BYTEA
-//        );
-
         String dbURL = ctx.getInitParameter("DBURL");
         String user = ctx.getInitParameter("DBUSER");
         String pwd = ctx.getInitParameter("DBPWD");
@@ -39,7 +29,7 @@ public class AppContextListener implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        // Close resources here
+        // Close resources
         try {
             DatabaseUtility.closeDataSource();
             System.out.println("Closed ");

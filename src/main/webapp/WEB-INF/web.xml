@@ -21,7 +21,7 @@
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.chaunhat.fluffyfunicular.servlets.Login</servlet-class>
+        <servlet-class>com.chaunhat.fluffyfunicular.controller.Login</servlet-class>
         <init-param>
             <param-name>emailRegex</param-name>
             <param-value>^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$</param-value>
