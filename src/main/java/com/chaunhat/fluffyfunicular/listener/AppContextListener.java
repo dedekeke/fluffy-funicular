@@ -1,6 +1,5 @@
 package com.chaunhat.fluffyfunicular.listener;
 
-import com.chaunhat.fluffyfunicular.util.DataSeeder;
 import com.chaunhat.fluffyfunicular.util.DatabaseUtility;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -20,9 +19,8 @@ public class AppContextListener implements ServletContextListener {
         String pwd = ctx.getInitParameter("DBPWD");
 
         try {
-            DataSource ds = DatabaseUtility.setupDataSource(dbURL, user, pwd);
+            DatabaseUtility.setupDataSource(dbURL, user, pwd);
             System.out.println("Database connection initialized for Application.");
-//            DataSeeder.seedProducts(ds.getConnection());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

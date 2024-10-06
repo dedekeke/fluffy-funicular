@@ -45,10 +45,10 @@
             <% int count = 0; %>
             <% for (Product product : products) { %>
             <div class="carousel-item <%= count == 0 ? "active" : "" %>">
-                <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(product.image()) %>" class="d-block w-100" alt="<%= product.name() %>">
+                <img src="<%= product.getSrc()%>" class="d-block w-100" alt="<%= product.getName() %>">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><%= product.name() %></h5>
-                    <p><%= product.description() %></p>
+                    <h5><%= product.getName() %></h5>
+                    <p><%= product.getDescription() %></p>
                 </div>
             </div>
             <% count++; %>
@@ -82,11 +82,11 @@
                 <% for (int i = start; i < end; i++) { %>
                 <div class="col">
                     <div class="card product-card h-100">
-                        <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(products.get(i).image()) %>" class="card-img-top" alt="<%= products.get(i).name() %>">
+                        <img src="<%= products.get(i).getSrc()%>" class="card-img-top" alt="<%= products.get(i).getName() %>">
                         <div class="card-body">
-                            <h5 class="card-title"><%= products.get(i).name() %></h5>
-                            <p class="card-text"><%= products.get(i).description() %></p>
-                            <p class="card-text">Quantity: <%= products.get(i).quantity() %></p>
+                            <h5 class="card-title"><%= products.get(i).getName() %></h5>
+                            <p class="card-text"><%= products.get(i).getDescription() %></p>
+                            <p class="card-text">Quantity: <%= products.get(i).getNumber() %></p>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                 <% } %>
             </div>
             <nav aria-label="Product Pagination">
-                <ul class="pagination justify-content-center mt-4">
+                <ul class="pagination justify-content-center mt-4" data-bs-theme="dark">
                     <% if (products != null && !products.isEmpty()) { %>
                     <% int totalPages = (int) Math.ceil((double) products.size() / pageSize); %>
                     <li class="page-item <%= currentPage == 1 ? "disabled" : "" %>">

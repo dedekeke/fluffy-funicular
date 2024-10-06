@@ -5,7 +5,7 @@
          version="5.0">
     <context-param>
         <param-name>DBURL</param-name>
-        <param-value>jdbc:postgresql://localhost:5432/fluffy-funicular</param-value>
+        <param-value>jdbc:postgresql://localhost:5432/ShoppingDB?currentSchema=public</param-value>
     </context-param>
     <context-param>
         <param-name>DBUSER</param-name>
@@ -13,7 +13,7 @@
     </context-param>
     <context-param>
         <param-name>DBPWD</param-name>
-        <param-value></param-value>
+        <param-value>1</param-value>
     </context-param>
     <listener>
         <listener-class>com.chaunhat.fluffyfunicular.listener.AppContextListener</listener-class>

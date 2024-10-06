@@ -1,12 +1,11 @@
 package com.chaunhat.fluffyfunicular.controller;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import com.chaunhat.fluffyfunicular.model.User;
+import com.chaunhat.fluffyfunicular.model.Account;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -16,13 +15,12 @@ import jakarta.servlet.annotation.*;
 public class Login extends HttpServlet {
     protected  ServletContext context;
     private Pattern emailPattern;
-    protected List<User> userList;
     protected String name;
     protected String email;
     protected String password;
-    protected String confirmPwd;
     protected boolean isAdmin;
-    protected boolean rememberMe;
+    protected String address;
+    protected String phone;
 
 
 
@@ -33,29 +31,27 @@ public class Login extends HttpServlet {
         emailPattern = Pattern.compile(emailRegex);
         context = getServletContext();
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
         name = request.getParameter("name");
         email = request.getParameter("email");
         password = request.getParameter("password");
-        confirmPwd = request.getParameter("confirmPassword");
         isAdmin = request.getParameter("isAdmin") != null;
-        rememberMe = request.getParameter("rememberMe") != null;
 
-        if (context.getAttribute("userList") == null){
-            userList = new ArrayList<>();
-        } else {
-            userList = (List<User>) context.getAttribute("userList");
-        }
-        // TODO: split sign in and sign up
-        // TODO: change the logic of sign in
         if (action != null && action.equals("signup")) {
-            // Sign-up request
-            handleSignup(request, response);
+            try {
+                handleSignup(request, response);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else if (action != null && action.equals("signin")){
-            // Login request
-            handleLogin(request, response);
+            try {
+                handleLogin(request, response);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else {
             request.setAttribute("errorMessage", "Something went wrong!");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -65,31 +61,20 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            if (userList == null || userList.isEmpty()) {
-                context.getRequestDispatcher("/login.jsp").forward(request, response);
-                return;
-            }
-            UUID userId = (UUID) context.getAttribute("lastUserLoggedIn");
             for (Cookie cookie : cookies) {
-                if (userId == null) break;
-                if (cookie.getName().equals(userId.toString())) {
-                    String[] userInfo = cookie.getValue().split("\\|");
-                    String email = userInfo[0];
-                    String password = userInfo[1];
+                if ("userToken".equals(cookie.getName())) { // Now using a generic userToken cookie
+                    String token = cookie.getValue();
+                    Account user = (Account) context.getAttribute(token); // Assuming user is mapped to the token in context
 
-                    // Authenticate the user based on the email and password from the cookie
-                    User user = User.findUser(email, password, userList);
                     if (user != null) {
-                        // Set the user's information in the session
                         HttpSession session = request.getSession();
                         session.setAttribute("name", user.name());
-                        session.setAttribute("isAdmin", user.isAdmin());
+                        if (user.account_role() == 1) session.setAttribute("isAdmin", true);
+                        else session.setAttribute("isAdmin", false);
 
                         request.setAttribute("email", user.email());
                         request.setAttribute("password", user.password());
-
                         context.setAttribute("isLoggedIn", true);
-                        context.setAttribute("lastUserLoggedIn", user.id());
 
                         context.getRequestDispatcher("/login.jsp").forward(request, response);
                         return;
@@ -103,26 +88,18 @@ public class Login extends HttpServlet {
     }
 
     private void handleSignup(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Validation
+            throws Exception {
         String errorMessage = "";
-        if (emailInvalid(email)) {
-            errorMessage = "Invalid email format";
-        }
-        if (!password.equals(confirmPwd)) {
-            errorMessage = "Passwords do not match";
-        }
-        if (errorMessage.isBlank() && !name.isEmpty()) {
-            User user = User.createUser(name, email, password, password, isAdmin);
-            userList.add(user);
+        if (emailInvalid(email)) errorMessage = "Invalid email format";
+        boolean isCreated = Account.createAccount(name, email, password, isAdmin, address, phone);
+
+        if (errorMessage.isBlank() && !name.isEmpty() && isCreated) {
 
             HttpSession session = request.getSession();
             session.setAttribute("name", name);
             session.setAttribute("isAdmin", isAdmin);
             context.setAttribute("isLoggedIn", true);
-            context.setAttribute("userList", userList);
 
-            // Redirect to landing page after login
             response.sendRedirect("/");
         } else {
             request.setAttribute("errorMessage", errorMessage);
@@ -130,39 +107,37 @@ public class Login extends HttpServlet {
         }
     }
 
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        User user = User.findUser(email, password, userList);
-
-        // Validation
-        String invalidCredential = "";
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Account user = Account.getAccount(email, password);
         if (user == null) {
-            invalidCredential = "Invalid credential!";
+            request.setAttribute("invalidCredential", "Invalid email or password.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
         }
 
-        if (invalidCredential.isBlank() && user != null) {
-            // Redirect to login page after successful sign-up
-            HttpSession session = request.getSession();
-            session.setAttribute("name", user.name());
-            session.setAttribute("isAdmin", user.isAdmin());
-            context.setAttribute("isLoggedIn", true);
-            // Check if the "rememberMe" checkbox is checked
-            if (rememberMe) {
-                // Create a cookie with the user's email and password
-                context.setAttribute("lastUserLoggedIn", user.id());
-                Cookie userCookie = new Cookie(user.id().toString(), user.email() + "|" + user.password());
-                userCookie.setMaxAge(60 * 60 * 24 * 30); // Set the cookie to expire in 30 days
-                response.addCookie(userCookie);
-            }
-            response.sendRedirect("/");
-        } else {
-            request.setAttribute("invalidCredential", invalidCredential);
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
-        }
+        // Generate a secure token for the logged-in user
+        String token = generateSecureToken();
+
+        // Store the token and user information in the context (or in a more secure persistence store)
+        context.setAttribute(token, user);
+
+        // Set the token in the cookie for the client
+        Cookie userTokenCookie = new Cookie("userToken", token);
+        userTokenCookie.setMaxAge(60 * 60 * 24 * 30); // 30 days
+        response.addCookie(userTokenCookie);
+
+        response.sendRedirect("/");
     }
 
     private boolean emailInvalid(String emailAddress) {
         return !emailPattern.matcher(emailAddress).matches();
     }
 
+    private boolean phoneValid(String phone) {
+        return true;
+    }
+
+    private String generateSecureToken() {
+        return UUID.randomUUID().toString();
+    }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ProductDAO {
     public Product getProductById(int id) throws SQLException {
-        String sql = "SELECT * FROM products WHERE id = ?";
+        String sql = "SELECT * FROM \"Products\" WHERE product_id = ?";
         try (Connection conn = DatabaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -25,7 +25,7 @@ public class ProductDAO {
     }
 
     public List<Product> searchProduct(String searchString) throws SQLException {
-        String sql = "SELECT * FROM products WHERE products.product_name ILIKE ?";
+        String sql = "SELECT * FROM \"Products\" WHERE product_name ILIKE ?";
         List<Product> products = new ArrayList<>();
 
         try (Connection conn = DatabaseUtility.getConnection();
@@ -40,7 +40,7 @@ public class ProductDAO {
                             rs.getString("product_name"),
                             rs.getString("product_des"),
                             rs.getDouble("product_price"),
-                            rs.getString("product_img_src"),
+                            rs.getString("product_img_source"),
                             rs.getString("product_type"),
                             rs.getString("product_brand"),
                             rs.getInt("number")
@@ -54,7 +54,7 @@ public class ProductDAO {
 
     public List<Product> getAllProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products";
+        String sql = "SELECT * FROM \"Products\" order by product_id asc ";
         try (Connection conn = DatabaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -64,10 +64,10 @@ public class ProductDAO {
                     rs.getString("product_name"),
                     rs.getString("product_des"),
                     rs.getDouble("product_price"),
-                    rs.getString("product_img_src"),
+                    rs.getString("product_img_source"),
                     rs.getString("product_type"),
                     rs.getString("product_brand"),
-                    rs.getInt("number")
+                    0
                 ));
             }
         }
@@ -75,7 +75,7 @@ public class ProductDAO {
     }
 
     public void insertProduct(Product product) throws SQLException {
-        String sql = "INSERT INTO products (product_name, product_des, product_price, product_img_source, product_type, product_brand, number) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO \"Products\" (product_name, product_des, product_price, product_img_source, product_type, product_brand) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, product.getName());
@@ -84,13 +84,12 @@ public class ProductDAO {
             stmt.setString(5, product.getSrc());
             stmt.setString(6, product.getType());
             stmt.setString(7, product.getBrand());
-            stmt.setInt(8, product.getNumber());
             stmt.executeUpdate();
         }
     }
 
     public boolean deleteProduct(int productId) {
-        String sql = "DELETE FROM products WHERE product_id = ?";
+        String sql = "DELETE FROM \"Products\" WHERE product_id = ?";
         try (Connection conn = DatabaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, productId);
