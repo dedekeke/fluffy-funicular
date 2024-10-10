@@ -13,6 +13,10 @@ public class ProductController {
         return productDAO.getAllProducts();
     }
 
+    public Product getProductById(int id) throws SQLException {
+        return productDAO.getProductById(id);
+    }
+
     public static List<Product> searchProducts(String name) throws SQLException {
         return productDAO.searchProduct(name);
     }

@@ -141,7 +141,7 @@ public class ProductDAO {
                         rs.getString("product_name"),
                         rs.getString("product_des"),
                         rs.getDouble("product_price"),
-                        rs.getString("product_img_src"),
+                        rs.getString("product_img_source"),
                         rs.getString("product_type"),
                         rs.getString("product_brand")
                 );

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
-<%@ page import="java.util.Base64" %>
 <%@ page import="jakarta.servlet.ServletContext" %>
 <!DOCTYPE html>
 <html>
@@ -13,7 +12,6 @@
 <body>
 <%@ include file="header.jsp" %>
 
-<% ServletContext context = request.getServletContext(); %>
 <%
     if (isLoggedIn) {
 %>
@@ -81,14 +79,16 @@
                 <% int end = Math.min(start + pageSize, products.size()); %>
                 <% for (int i = start; i < end; i++) { %>
                 <div class="col">
-                    <div class="card product-card h-100">
-                        <img src="<%= products.get(i).getSrc()%>" class="card-img-top" alt="<%= products.get(i).getName() %>">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= products.get(i).getName() %></h5>
-                            <p class="card-text"><%= products.get(i).getDescription() %></p>
-                            <p class="card-text">Description: <%= products.get(i).getDescription() %></p>
+                    <a href="productDetail?id=<%= products.get(i).getId() %>" style="text-decoration: none">
+                        <div class="card product-card h-100">
+                            <img src="<%= products.get(i).getSrc()%>" class="card-img-top" alt="<%= products.get(i).getName() %>">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= products.get(i).getName() %></h5>
+                                <p class="card-text"><%= products.get(i).getDescription() %></p>
+                                <p class="card-text">Description: <%= products.get(i).getDescription() %></p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <% } %>
                 <% } else { %>
@@ -155,6 +155,6 @@
     <% if (isLoggedIn) { %>
         toastBS.show();
     <% } %>
-</script    >
+</script>
 </body>
 </html>

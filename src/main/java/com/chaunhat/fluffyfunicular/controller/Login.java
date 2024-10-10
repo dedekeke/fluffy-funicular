@@ -56,7 +56,7 @@ public class Login extends HttpServlet {
             }
         } else {
             request.setAttribute("errorMessage", "Something went wrong!");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/login").forward(request, response);
         }
     }
 
@@ -105,7 +105,7 @@ public class Login extends HttpServlet {
             response.sendRedirect("/");
         } else {
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/login").forward(request, response);
         }
     }
 
@@ -113,22 +113,17 @@ public class Login extends HttpServlet {
         Account user = Account.getAccount(email, password);
         if (user == null) {
             request.setAttribute("invalidCredential", "Invalid email or password.");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/login").forward(request, response);
             return;
         }
-
-        // Generate a secure token for the logged-in user
         String token = generateSecureToken();
-
-        // Store the token and user information in the context (or in a more secure persistence store)
         context.setAttribute(token, user);
 
-        // Set the token in the cookie for the client
         Cookie userTokenCookie = new Cookie("userToken", token);
         userTokenCookie.setMaxAge(60 * 60 * 24 * 30); // 30 days
         response.addCookie(userTokenCookie);
 
-        response.sendRedirect("/");
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     private boolean emailInvalid(String emailAddress) {

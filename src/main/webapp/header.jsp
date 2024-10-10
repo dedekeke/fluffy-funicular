@@ -1,10 +1,13 @@
 <%@ page import="java.util.*, javax.servlet.http.*" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <header>
     <div class="navbar bg-dark bg-gradient bg-opacity-75">
         <div id="home_div">Home</div>
 
+<%--        Search bar--%>
         <% List<Product> searchResults = (List<Product>) request.getAttribute("searchResults"); %>
         <div class="d-flex ms-auto position-relative">
             <form action="search" method="post" class="d-flex ms-auto" id="searchForm">
@@ -29,9 +32,19 @@
             </form>
         </div>
 
+<%--        Cart--%>
+        <a class="nav-link" href="<%= request.getContextPath() %>/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="badge bg-danger">
+                <%
+                    List<Product> cartItems = (List<Product>) session.getAttribute("cart");
+                    int cartSize = cartItems != null ? cartItems.size() : 0;
+                    out.print(cartSize);
+                %>
+            </span>
+        </a>
+<%--        Avatar/Login btn--%>
         <div id="userInfo"></div>
-
-
     </div>
 </header>
 
@@ -54,6 +67,7 @@
                     class="user-avatar dropdown-toggle"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    style="height: 50px; width: 50"
                   >
                   <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                     <li><a class="dropdown-item disabled" href="#">Welcome ${name}</a></li>

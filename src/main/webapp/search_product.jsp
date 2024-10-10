@@ -14,7 +14,7 @@
 <% List<Product> products = (List<Product>) request.getAttribute("results"); %>
 <%@ include file="header.jsp" %>
 
-<div class="container mt-5 p-5">
+<div class="container mt-5 p-5" style="min-height: 500px">
     <h2 class="mb-4">Search Results</h2>
     <div class="row row-cols-1 row-cols-md-2 g-4">
         <%
