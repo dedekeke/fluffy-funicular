@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountDAO {
-    public Account getUserByEmailandPassword(String userEmail, String password) throws SQLException {
+    public Account getUserByEmailAndPassword(String userEmail, String password) throws SQLException {
         Account user = null;
         String sql = "SELECT * FROM \"Account\" WHERE user_mail = ? AND password = ?";
         try (Connection conn = DatabaseUtility.getConnection();
@@ -68,8 +68,8 @@ public class AccountDAO {
                         rs.getString("user_mail"),
                         rs.getString("password"),
                         rs.getInt("account_role"),
-                        rs.getString("address"),
-                        rs.getString("phone")
+                        rs.getString("user_address"),
+                        rs.getString("user_phone")
                 );
             }
         }

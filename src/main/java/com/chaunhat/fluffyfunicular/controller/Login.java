@@ -39,6 +39,8 @@ public class Login extends HttpServlet {
         email = request.getParameter("email");
         password = request.getParameter("password");
         isAdmin = request.getParameter("isAdmin") != null;
+        address = request.getParameter("address");
+        phone = request.getParameter("phone");
 
         if (action != null && action.equals("signup")) {
             try {

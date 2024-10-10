@@ -1,5 +1,6 @@
 package com.chaunhat.fluffyfunicular.controller;
 
+import com.chaunhat.fluffyfunicular.controller.product.ProductController;
 import com.chaunhat.fluffyfunicular.model.Product;
 import com.chaunhat.fluffyfunicular.dao.ProductDAO;
 import jakarta.servlet.ServletContext;
@@ -13,61 +14,38 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "DashboardServlet", value = "/dashboard")
 public class Dashboard extends HttpServlet {
-    private ProductDAO productDAO;
-
-    public void init() {
-        productDAO = new ProductDAO();
-    }
+    private final ProductController controller = new ProductController();
+    protected String name;
+    protected String description;
+    protected double price;
+    protected String img_src;
+    protected String type;
+    protected String brand;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (ServletFileUpload.isMultipartContent((javax.servlet.http.HttpServletRequest) request)) {
-            try {
-                Product product = handleFileUpload(request);
-                if (product != null) {
-                    productDAO.insertProduct(product);
-                    request.setAttribute("infoMessage", "Product added successfully!");
-                }
-            } catch (Exception e) {
-                request.setAttribute("errorMessage", "Failed to add product: " + e.getMessage());
-            }
-            doGet(request, response);
-        }
-    }
+        // Add products
+        name = request.getParameter("name");
+        description = request.getParameter("description");
+        price = Double.parseDouble(request.getParameter("price"));
+        img_src = request.getParameter("image");
+        type = request.getParameter("type");
+        brand = request.getParameter("brand");
 
-    private Product handleFileUpload(HttpServletRequest request) throws Exception {
-        List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest((javax.servlet.http.HttpServletRequest) request);
-        byte[] image = null;
-        String name = "", description = "";
-        int quantity = 0;
-        double price = 0.0;
-
-        for (FileItem item : multiparts) {
-            if (!item.isFormField()) {
-                image = item.get();
-            } else {
-                String fieldName = item.getFieldName();
-                String fieldValue = item.getString();
-                switch (fieldName) {
-                    case "name":
-                        name = fieldValue;
-                        break;
-                    case "description":
-                        description = fieldValue;
-                        break;
-                    case "quantity":
-                        quantity = Integer.parseInt(fieldValue);
-                        break;
-                    case "price":
-                        price = Double.parseDouble(fieldValue);
-                        break;
-                }
-            }
+        Product newProduct = new Product(name, description, price, img_src, type, brand);
+        try {
+            int result = controller.createProduct(newProduct);
+            if (result != -1) request.setAttribute("infoMessage", "Product created");
+            else request.setAttribute("errorMessage", "Something went wrong!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null; //temp
+
+        response.sendRedirect(request.getContextPath() + "/dashboard");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -78,7 +56,7 @@ public class Dashboard extends HttpServlet {
 
         if (isLoggedIn != null && isLoggedIn && isAdmin) {
             try {
-                List<Product> products = productDAO.getAllProducts();  // Get all products from the database
+                List<Product> products = ProductController.getAllProducts();
                 request.setAttribute("products", products);
                 request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
             } catch (Exception e) {

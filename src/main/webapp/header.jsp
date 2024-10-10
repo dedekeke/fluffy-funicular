@@ -1,9 +1,37 @@
 <%@ page import="java.util.*, javax.servlet.http.*" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
 <header>
     <div class="navbar bg-dark bg-gradient bg-opacity-75">
         <div id="home_div">Home</div>
+
+        <% List<Product> searchResults = (List<Product>) request.getAttribute("searchResults"); %>
+        <div class="d-flex ms-auto position-relative">
+            <form action="search" method="post" class="d-flex ms-auto" id="searchForm">
+                <input class="form-control me-2" type="search"` id="searchInput" placeholder="Search products" aria-label="Search" autocomplete="off" name="searchString">
+                <div class="dropdown">
+                    <ul id="searchResultsDropdown" class="dropdown-menu" style="position: absolute; top: 100%; left: 0; right: 0;">
+                        <%
+                            if (searchResults != null && !searchResults.isEmpty()) {
+                                for (Product product : searchResults) {
+                        %>
+                        <li class="dropdown-item"><%= product.getName() %></li>
+                        <%
+                            }
+                        } else if (searchResults != null) {
+                        %>
+                        <li class="dropdown-item disabled">No results found</li>
+                        <%
+                            }
+                        %>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
         <div id="userInfo"></div>
+
+
     </div>
 </header>
 

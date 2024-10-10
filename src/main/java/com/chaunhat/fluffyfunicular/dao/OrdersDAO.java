@@ -12,13 +12,13 @@ public class OrdersDAO {
         try {
             Connection conn = DatabaseUtility.getConnection();
 
-            String sqlO = "INSERT INTO Orders (user_mail, order_status, order_date, order_discount_code, order_address) VALUES(?,?,?,?,?)";
+            String sqlO = "INSERT INTO \"Orders\" (user_mail, order_status, order_date, order_discount_code, order_address) VALUES(?,?,?,?,?)";
             PreparedStatement stmt_Order = conn.prepareStatement(sqlO,  PreparedStatement.RETURN_GENERATED_KEYS);
-            stmt_Order.setString(1,order.userEmail());
-            stmt_Order.setInt(2,order.status());
-            stmt_Order.setDate(3, (Date) order.orderDate());
-            stmt_Order.setString(4,order.discount());
-            stmt_Order.setString(5,order.address());
+            stmt_Order.setString(1,order.getUserEmail());
+            stmt_Order.setInt(2,order.getStatus());
+            stmt_Order.setDate(3, (Date) order.getOrderDate());
+            stmt_Order.setString(4,order.getDiscount());
+            stmt_Order.setString(5,order.getAddress());
             stmt_Order.executeUpdate();
             ResultSet rs = stmt_Order.getGeneratedKeys();
             int orderID = 0;
@@ -26,7 +26,7 @@ public class OrdersDAO {
                 orderID = rs.getInt(1);
             }
 
-            String sqlC = "INSERT INTO  Orders_detail(order_id, product_id,amount_product,price_product) VALUES(?,?,?,?)";
+            String sqlC = "INSERT INTO \"Orders_detail\" (order_id, product_id,amount_product,price_product) VALUES(?,?,?,?)";
             PreparedStatement stmt_Cart = conn.prepareStatement(sqlC);
             for(Product product : cart.getItems()) {
                 stmt_Cart.setInt(1,orderID);

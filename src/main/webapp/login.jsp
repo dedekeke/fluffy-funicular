@@ -62,15 +62,16 @@
                             <div id="avatar_signup">
                                 <img src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.553209589.1714435200&semt=sph" alt="Avatar">
                             </div>
-<%--                            TODO:fix this--%>
                             <label for="name_signup">Name</label>
                             <input type="text" name="name" id="name_signup" placeholder="John Doe" required>
                             <label for="email_signup">Email</label>
                             <input type="email" name="email" id="email_signup" placeholder="Email" required>
                             <label for="password_signup">Password</label>
                             <input type="password" name="password" id="password_signup" placeholder="Password" required>
-                                <label for="password_signup">Password</label>
-                            <input type="text" name="password" id="password_signup" placeholder="Password" required>
+                            <label for="address">Address</label>
+                            <input type="text" name="address" id="address" placeholder="Address" required>
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" name="phone" id="phone" placeholder="Phone number" required>
 
                             <div class="d-flex align-items-start">
                                 <input type="checkbox" name="isAdmin" id="isAdmin" class="checkboxBtn">

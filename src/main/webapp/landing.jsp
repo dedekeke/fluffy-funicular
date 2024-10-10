@@ -19,7 +19,7 @@
 %>
 <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div class="toast-container position-absolute top-0 end-0 p-3">
-        <div class="toast text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" id="loggin-toast">
+        <div class="toast text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" id="loggin-toast">
             <div class="toast-body">
                 Welcome back, <%= name%>
             </div>
@@ -86,7 +86,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><%= products.get(i).getName() %></h5>
                             <p class="card-text"><%= products.get(i).getDescription() %></p>
-                            <p class="card-text">Quantity: <%= products.get(i).getNumber() %></p>
+                            <p class="card-text">Description: <%= products.get(i).getDescription() %></p>
                         </div>
                     </div>
                 </div>

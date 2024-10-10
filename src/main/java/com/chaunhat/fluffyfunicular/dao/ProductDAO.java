@@ -30,7 +30,6 @@ public class ProductDAO {
 
         try (Connection conn = DatabaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Concatenate wildcards with the search string
             stmt.setString(1, "%" + searchString + "%");
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -42,8 +41,7 @@ public class ProductDAO {
                             rs.getDouble("product_price"),
                             rs.getString("product_img_source"),
                             rs.getString("product_type"),
-                            rs.getString("product_brand"),
-                            rs.getInt("number")
+                            rs.getString("product_brand")
                     );
                     products.add(product);
                 }
@@ -54,7 +52,7 @@ public class ProductDAO {
 
     public List<Product> getAllProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM \"Products\" order by product_id asc ";
+        String sql = "SELECT * FROM \"Products\" order by product_id";
         try (Connection conn = DatabaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -66,27 +64,60 @@ public class ProductDAO {
                     rs.getDouble("product_price"),
                     rs.getString("product_img_source"),
                     rs.getString("product_type"),
-                    rs.getString("product_brand"),
-                    0
+                    rs.getString("product_brand")
                 ));
             }
         }
         return products;
     }
 
-    public void insertProduct(Product product) throws SQLException {
-        String sql = "INSERT INTO \"Products\" (product_name, product_des, product_price, product_img_source, product_type, product_brand) VALUES (?, ?, ?, ?, ?)";
+    public int insertProduct(Product product) throws SQLException {
+        String sql = "INSERT INTO \"Products\" (product_name, product_des, product_price, product_img_source, product_type, product_brand) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtility.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, product.getName());
             stmt.setString(2, product.getDescription());
-            stmt.setDouble(4, product.getPrice());
-            stmt.setString(5, product.getSrc());
-            stmt.setString(6, product.getType());
-            stmt.setString(7, product.getBrand());
-            stmt.executeUpdate();
+            stmt.setDouble(3, product.getPrice());
+            stmt.setString(4, product.getSrc());
+            stmt.setString(5, product.getType());
+            stmt.setString(6, product.getBrand());
+
+            // Execute the insert and retrieve the generated keys
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1);
+                    }
+                }
+            }
+            return -1;
         }
     }
+
+    public boolean updateProduct(Product product) throws SQLException {
+        String sql = "UPDATE \"Products\" SET product_name = ?, product_des = ?, product_price = ?, product_img_source = ?, product_type = ?, product_brand = ? WHERE product_id = ?";
+        try (Connection conn = DatabaseUtility.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Set the parameters for the update query
+            stmt.setString(1, product.getName());
+            stmt.setString(2, product.getDescription());
+            stmt.setDouble(3, product.getPrice());
+            stmt.setString(4, product.getSrc());
+            stmt.setString(5, product.getType());
+            stmt.setString(6, product.getBrand());
+            stmt.setInt(7, product.getId());
+
+            // Execute the update and check if a row was updated
+            int rowsAffected = stmt.executeUpdate();
+
+            // Return true if at least one row was updated, otherwise false
+            return rowsAffected > 0;
+        }
+    }
+
 
     public boolean deleteProduct(int productId) {
         String sql = "DELETE FROM \"Products\" WHERE product_id = ?";
@@ -112,8 +143,7 @@ public class ProductDAO {
                         rs.getDouble("product_price"),
                         rs.getString("product_img_src"),
                         rs.getString("product_type"),
-                        rs.getString("product_brand"),
-                        rs.getInt("number")
+                        rs.getString("product_brand")
                 );
             }
         }

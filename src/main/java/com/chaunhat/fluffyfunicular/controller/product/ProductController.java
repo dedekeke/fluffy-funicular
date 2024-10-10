@@ -17,6 +17,18 @@ public class ProductController {
         return productDAO.searchProduct(name);
     }
 
+    public int createProduct(Product product) throws SQLException {
+        return productDAO.insertProduct(product);
+    }
+
+    public boolean deleteProduct(int id) throws SQLException {
+        return productDAO.deleteProduct(id);
+    }
+
+    public boolean updateProduct(Product product) throws SQLException {
+        return productDAO.updateProduct(product);
+    }
+
     public static int getPageCount(List<Product> products, int pageSize) {
         return (products.size() / pageSize) + (products.size() % pageSize == 0 ? 0 : 1);
     }
