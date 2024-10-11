@@ -45,6 +45,7 @@
 
       <form action="${pageContext.request.contextPath}/addToCart" method="post">
         <input type="hidden" name="productId" value="${product.id}">
+        <input type="hidden" name="action" value="add">
         <label for="quantity">Quantity:</label>
         <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control w-25 mb-3">
         <button type="submit" class="btn btn-outline-danger"><i class="fa fa-cart-plus"></i> Add to Cart</button>

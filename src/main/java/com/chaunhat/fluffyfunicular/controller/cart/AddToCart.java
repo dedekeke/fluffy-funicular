@@ -13,17 +13,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(name = "AddToCart", value = "/addToCart")
 public class AddToCart extends HttpServlet {
     private ProductController controller = new ProductController();
 
-    // TODO: reuse this method to update cart
-    // TODO: add delete cart
-    // TODO: responsive + font
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         List<Product> cartItems = (List<Product>) session.getAttribute("cart");
+        String action = request.getParameter("action");
 
         if (cartItems == null) {
             cartItems = new ArrayList<>();
@@ -39,6 +38,18 @@ public class AddToCart extends HttpServlet {
             throw new RuntimeException(e);
         }
 
+        if (Objects.equals(action, "add")) {
+            addProductToCart(product, productId, quantity, cartItems, session);
+            response.sendRedirect(request.getContextPath() + "/productDetail?id=" + productId);
+        }
+        else if (Objects.equals(action, "update")) {
+            updateProductAmount(product, productId, quantity, cartItems, session);
+            response.sendRedirect(request.getContextPath() + "/cart");
+        }
+
+    }
+
+    private void addProductToCart(Product product, int productId, int quantity, List<Product> cartItems, HttpSession session) {
         if (product != null) {
             boolean productExists = false;
             for (Product item : cartItems) {
@@ -56,7 +67,18 @@ public class AddToCart extends HttpServlet {
 
             session.setAttribute("cart", cartItems);
         }
+    }
 
-        response.sendRedirect(request.getContextPath() + "/productDetail?id=" + productId);
+    private void updateProductAmount(Product product, int productId, int quantity, List<Product> cartItems, HttpSession session) {
+        if (product != null) {
+            for (Product item : cartItems) {
+                if (item.getId() == productId) {
+                    item.setNumber(quantity);
+                    break;
+                }
+            }
+
+            session.setAttribute("cart", cartItems);
+        }
     }
 }

@@ -11,8 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 </head>
+<%@ include file="header.jsp" %>
 <body data-bs-theme="dark">
-    <%@ include file="header.jsp" %>
     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
     <% String infoMessage = (String) request.getAttribute("infoMessage"); %>
     <% if (errorMessage != null) { %>
@@ -113,47 +113,6 @@
                         </div>
                     </div>
                 </div>
-<%--                <div class="modal fade" id="updateProductModal" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true">--%>
-<%--                    <div class="modal-dialog">--%>
-<%--                        <div class="modal-content">--%>
-<%--                            <div class="modal-header">--%>
-<%--                                <h5 class="modal-title" id="updateProductModalLabel">Update Product</h5>--%>
-<%--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--%>
-<%--                            </div>--%>
-<%--                            <div class="modal-body">--%>
-<%--                                <form action="/updateProduct" method="post" id="updateProductForm">--%>
-<%--                                    <input type="hidden" name="action" value="update"/>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label for="updateProductName">Name:</label>--%>
-<%--                                        <input type="text" name="name" id="updateProductName" required class="form-control"/>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label for="updateProductDescription">Description:</label>--%>
-<%--                                        <input type="text" name="description" id="updateProductDescription" required class="form-control"/>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label for="updateProductPrice">Price:</label>--%>
-<%--                                        <input type="text" name="price" id="updateProductPrice" required class="form-control"/>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label for="updateProductImage">Image:</label>--%>
-<%--                                        <input type="text" name="image" id="updateProductImage" class="form-control"/>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label for="updateProductType">Type:</label>--%>
-<%--                                        <input type="text" name="type" id="updateProductType" required class="form-control"/>--%>
-<%--                                    </div>--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label for="updateProductBrand">Brand:</label>--%>
-<%--                                        <input type="text" name="brand" id="updateProductBrand" class="form-control"/>--%>
-<%--                                    </div>--%>
-
-<%--                                    <button type="submit" class="btn btn-success">Update Product</button>--%>
-<%--                                </form>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
                 <!-- Update Modal for Each Product -->
                 <c:forEach var="product" items="${products}">
                     <div class="modal fade" id="updateProductModal-${product.getId()}" tabindex="-1" aria-labelledby="updateProductModalLabel" aria-hidden="true">

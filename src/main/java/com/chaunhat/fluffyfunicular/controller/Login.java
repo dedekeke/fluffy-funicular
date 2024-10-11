@@ -96,20 +96,20 @@ public class Login extends HttpServlet {
         boolean isCreated = Account.createAccount(name, email, password, isAdmin, address, phone);
 
         if (errorMessage.isBlank() && !name.isEmpty() && isCreated) {
-
             HttpSession session = request.getSession();
             session.setAttribute("name", name);
             session.setAttribute("isAdmin", isAdmin);
             context.setAttribute("isLoggedIn", true);
 
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         } else {
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("/login").forward(request, response);
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 
     private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
         Account user = Account.getAccount(email, password);
         if (user == null) {
             request.setAttribute("invalidCredential", "Invalid email or password.");
@@ -122,6 +122,7 @@ public class Login extends HttpServlet {
         Cookie userTokenCookie = new Cookie("userToken", token);
         userTokenCookie.setMaxAge(60 * 60 * 24 * 30); // 30 days
         response.addCookie(userTokenCookie);
+        session.setAttribute("email", user.email());
 
         response.sendRedirect(request.getContextPath() + "/");
     }

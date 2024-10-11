@@ -5,13 +5,12 @@
 
 <header>
     <div class="navbar bg-dark bg-gradient bg-opacity-75">
-        <div id="home_div">Home</div>
 
 <%--        Search bar--%>
         <% List<Product> searchResults = (List<Product>) request.getAttribute("searchResults"); %>
-        <div class="d-flex ms-auto position-relative">
+        <div class="m-auto w-100 position-relative">
             <form action="search" method="post" class="d-flex ms-auto" id="searchForm">
-                <input class="form-control me-2" type="search"` id="searchInput" placeholder="Search products" aria-label="Search" autocomplete="off" name="searchString">
+                <input class="form-control me-2" type="search" id="searchInput" placeholder="Search products" aria-label="Search" autocomplete="off" name="searchString" data-bs-theme="dark">
                 <div class="dropdown">
                     <ul id="searchResultsDropdown" class="dropdown-menu" style="position: absolute; top: 100%; left: 0; right: 0;">
                         <%
@@ -31,9 +30,11 @@
                 </div>
             </form>
         </div>
+        <div id="home_div">Home</div>
+
 
 <%--        Cart--%>
-        <a class="nav-link" href="<%= request.getContextPath() %>/cart">
+        <a class="nav-link ms-auto" href="<%= request.getContextPath() %>/cart">
             <i class="fa fa-shopping-cart"></i>
             <span class="badge bg-danger">
                 <%
@@ -81,8 +82,6 @@
                   <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                     <li><a class="dropdown-item" href="/">Home</a></li>
                     <li><a class="dropdown-item" href="/dashboard" ${!isAdmin ? 'hidden' : ''}>Dashboard</a></li>
-                    <li><a class="dropdown-item" href="/user-manager" ${!isAdmin ? 'hidden' : ''}>User Manager</a></li>
-                    <li><a class="dropdown-item" href="/about" ${isAdmin ? 'hidden' : ''}>About Us  </a></li>
                   </ul>
                 </div>
             `;

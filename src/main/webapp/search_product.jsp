@@ -31,14 +31,16 @@
         %>
         <% for (int i = start; i < end; i++) { %>
         <div class="col">
-            <div class="card product-card h-100">
-                <img src="<%= products.get(i).getSrc() %>" class="card-img-top" alt="<%= products.get(i).getName() %>" style="height: 100%">
-                <div class="card-body">
-                    <h5 class="card-title"><%= products.get(i).getName() %></h5>
-                    <p class="card-text"><%= products.get(i).getDescription() %></p>
-                    <p class="card-text">Quantity: <%= products.get(i).getNumber() %></p>
+            <a href="productDetail?id=<%= products.get(i).getId() %>" style="text-decoration: none">
+                <div class="card product-card h-100">
+                    <img src="<%= products.get(i).getSrc() %>" class="card-img-top" alt="<%= products.get(i).getName() %>" style="height: 100%">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= products.get(i).getName() %></h5>
+                        <p class="card-text"><%= products.get(i).getDescription() %></p>
+                        <p class="card-text">Quantity: <%= products.get(i).getNumber() %></p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <% } %>
         <% } else { %>

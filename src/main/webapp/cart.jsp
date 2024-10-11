@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +13,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
   <style>
     <%@ include file="/styles/header.css" %>
+    <%@ include file="/styles/cart.css" %>
   </style>
 </head>
 <body  data-bs-theme="dark">
@@ -39,19 +42,22 @@
             <c:forEach var="item" items="${cartItems}">
               <tr>
                 <td>${item.name}</td>
-                <td>$${item.price}</td>
+                <td>$<fmt:formatNumber value="${item.price}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+
                 <td>
-                  <form action="/updateCart" method="post">
+                  <form action="${pageContext.request.contextPath}/addToCart" method="post">
                     <input type="hidden" name="productId" value="${item.id}" />
+                    <input type="hidden" name="action" value="update" />
                     <input type="number" name="quantity" value="${item.number}" min="1" class="form-control w-50 d-inline"/>
                     <button type="submit" class="btn btn-info btn-sm">
                       <i class="fa fa-refresh"></i> Update
                     </button>
                   </form>
                 </td>
-                <td>$${item.price * item.number}</td>
+                <td>$<fmt:formatNumber value="${item.price * item.number}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+
                 <td>
-                  <form action="removeFromCart" method="post">
+                  <form action="/deleteFromCart" method="post">
                     <input type="hidden" name="productId" value="${item.id}" />
                     <button type="submit" class="btn btn-danger btn-sm">
                       <i class="fa fa-trash"></i> Remove
@@ -59,15 +65,15 @@
                   </form>
                 </td>
               </tr>
-<%--              <% total += item.getPrice() * item.getNumber(); %>--%>
+              <c:set var="total" value="${total + (item.price * item.number)}" />
             </c:forEach>
             </tbody>
           </table>
 
           <!-- Cart Summary -->
           <div class="float-right">
-            <h4>Total: $<%= total %></h4>
-            <a href="checkout.jsp" class="btn btn-success btn-lg">Proceed to Checkout</a>
+            <h4>Total: $${total}</h4>
+            <a href="${pageContext.request.contextPath}/createOrder" class="checkout-btn">Checkout</a>
           </div>
         </c:when>
         <c:otherwise>

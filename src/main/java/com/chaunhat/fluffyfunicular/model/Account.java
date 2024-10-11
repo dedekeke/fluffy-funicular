@@ -11,6 +11,11 @@ public record Account(String name, String email, String password, int account_ro
         return accountDAO.getUserByEmailAndPassword(email, password);
     }
 
+    public static Account getAccountByEmail(String email) throws SQLException {
+        AccountDAO accountDAO = new AccountDAO();
+        return accountDAO.getUserByEmail(email);
+    }
+
     public static boolean createAccount(String name, String email, String password, boolean isAdmin, String address, String phone) throws SQLException {
         AccountDAO accountDAO = new AccountDAO();
         int account_role = 2;

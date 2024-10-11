@@ -41,7 +41,5 @@ public class ProductDetail extends HttpServlet {
         request.setAttribute("product", product);
         request.getRequestDispatcher("/productDetail.jsp").forward(request, response);
     }
-
-
 }
 
