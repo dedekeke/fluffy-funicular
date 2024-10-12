@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List, com.chaunhat.prj321asm1.model.Product" %>
-<%@ page import="java.util.Base64" %>
+<%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
 <%@ page import="jakarta.servlet.ServletContext" %>
 <!DOCTYPE html>
 <html>
@@ -13,13 +12,12 @@
 <body>
 <%@ include file="header.jsp" %>
 
-<% ServletContext context = request.getServletContext(); %>
 <%
     if (isLoggedIn) {
 %>
 <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div class="toast-container position-absolute top-0 end-0 p-3">
-        <div class="toast text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" id="loggin-toast">
+        <div class="toast text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" id="loggin-toast">
             <div class="toast-body">
                 Welcome back, <%= name%>
             </div>
@@ -30,7 +28,7 @@
     }
 %>
 
-<% List<Product> products = (List<Product>) context.getAttribute("products"); %>
+<% List<Product> products = (List<Product>) request.getAttribute("products"); %>
 <% int currentPage = 1; %>
 <% int pageSize = 4; %>
 
@@ -45,10 +43,10 @@
             <% int count = 0; %>
             <% for (Product product : products) { %>
             <div class="carousel-item <%= count == 0 ? "active" : "" %>">
-                <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(product.image()) %>" class="d-block w-100" alt="<%= product.name() %>">
+                <img src="<%= product.getSrc()%>" class="d-block w-100" alt="<%= product.getName() %>">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><%= product.name() %></h5>
-                    <p><%= product.description() %></p>
+                    <h5><%= product.getName() %></h5>
+                    <p><%= product.getDescription() %></p>
                 </div>
             </div>
             <% count++; %>
@@ -67,10 +65,10 @@
 <p>No products available.</p>
 <% } %>
 
-<div class="container">
+<div class="container" data-bs-theme="dark">
     <div class="row">
+        <h2 class="my-4">Our Products</h2>
         <div class="col-md-8">
-            <h2 class="mb-4">Our Products</h2>
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 <% if (products != null && !products.isEmpty()) { %>
                 <% String pageParam = request.getParameter("page"); %>
@@ -81,14 +79,16 @@
                 <% int end = Math.min(start + pageSize, products.size()); %>
                 <% for (int i = start; i < end; i++) { %>
                 <div class="col">
-                    <div class="card product-card h-100">
-                        <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(products.get(i).image()) %>" class="card-img-top" alt="<%= products.get(i).name() %>">
-                        <div class="card-body">
-                            <h5 class="card-title"><%= products.get(i).name() %></h5>
-                            <p class="card-text"><%= products.get(i).description() %></p>
-                            <p class="card-text">Quantity: <%= products.get(i).quantity() %></p>
+                    <a href="productDetail?id=<%= products.get(i).getId() %>" style="text-decoration: none">
+                        <div class="card product-card h-100">
+                            <img src="<%= products.get(i).getSrc()%>" class="card-img-top" alt="<%= products.get(i).getName() %>">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= products.get(i).getName() %></h5>
+                                <p class="card-text"><%= products.get(i).getDescription() %></p>
+                                <p class="card-text">Description: <%= products.get(i).getDescription() %></p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <% } %>
                 <% } else { %>
@@ -96,7 +96,7 @@
                 <% } %>
             </div>
             <nav aria-label="Product Pagination">
-                <ul class="pagination justify-content-center mt-4">
+                <ul class="pagination justify-content-center mt-4" data-bs-theme="dark">
                     <% if (products != null && !products.isEmpty()) { %>
                     <% int totalPages = (int) Math.ceil((double) products.size() / pageSize); %>
                     <li class="page-item <%= currentPage == 1 ? "disabled" : "" %>">
@@ -117,30 +117,17 @@
             </nav>
         </div>
         <div class="col-md-4">
-            <div class="card cart">
-                <div class="card-header">
-                    <h2>Shopping Cart</h2>
-                </div>
-                <div class="cart-summary">
-                    <h3>Cart Summary</h3>
-                    <p class="subtotal">Subtotal: $<span id="subtotal">0.00</span></p>
-                    <p class="tax">Tax: $<span id="tax">0.00</span></p>
-                    <p class="total">Total: $<span id="total">0.00</span></p>
-                    <br/>
-                    <button class="checkout-btn float-end">Checkout</button>
-                </div>
+            <div class="card my-4">
+                <img src="https://file.hstatic.net/200000722513/file/khuyen_mai_t10_500x250.png"  alt="banner1"/>
             </div>
-            <h5 class="mt-4">Popular Products</h5>
-            <div class="row row-cols-1 row-cols-md-2 g-2 pbanner">
-                <div class="col">
-                    <img src="https://w0.peakpx.com/wallpaper/410/221/HD-wallpaper-full-black-screen-black-car-thumbnail.jpg" width="100px" height="100px" alt="Product 1">
-                </div>
-                <div class="col">
-                    <img src="https://i.etsystatic.com/21543272/r/il/05b6fd/5219117617/il_fullxfull.5219117617_j7ap.jpg" alt="Product 2" width="100px" height="100px">
-                </div>
-                <div class="col">
-                    <img src="https://xboxdesignlab.xbox.com/media/wysiwyg/standard_wireless_controller/whats_new/XDL_Standard-Wireless-Controller_Sync-Slider-768_01_1083x609_02.jpg" alt="Product 3" width="100px" height="100px">
-                </div>
+            <div class="card my-4">
+                <img src="https://file.hstatic.net/200000722513/file/thang_10_layout_web_-08.png"  alt="banner2"/>
+            </div>
+            <div class="card my-4">
+                <img src="https://file.hstatic.net/200000722513/file/thang_10_artboard_12_copy_10.png"  alt="banner2"/>
+            </div>
+            <div class="card my-4">
+                <img src="https://file.hstatic.net/200000722513/file/thang_10_layout_web_-06.png"  alt="banner2"/>
             </div>
         </div>
     </div>
@@ -148,7 +135,6 @@
 
 <%@ include file="footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-<%--script for toasting welcome message--%>
 <script>
     const toast = document.getElementById('loggin-toast');
     const toastBS = new bootstrap.Toast(toast);
@@ -156,6 +142,6 @@
     <% if (isLoggedIn) { %>
         toastBS.show();
     <% } %>
-</script    >
+</script>
 </body>
 </html>

@@ -2,33 +2,33 @@ html, body {
     height: 100vh;
 }
 
-.light-gray {
-    background-color: #b8d8d8;
-}
+/*.light-gray {*/
+/*    background-color: #b8d8d8;*/
+/*}*/
 
-.slightly-darker-gray {
-    background-color: #7a9e9f;
-}
+/*.slightly-darker-gray {*/
+/*    background-color: #7a9e9f;*/
+/*}*/
 
-.dark-gray {
-    background-color: #4f6367 !important;
-}
+/*.dark-gray {*/
+/*    background-color: #4f6367 !important;*/
+/*}*/
 
-.light-green {
-    background-color: #c3e6cb !important;
-}
+/*.light-green {*/
+/*    background-color: #c3e6cb !important;*/
+/*}*/
 
-.light-red {
-    background-color: #ff4545 !important;
-}
+/*.light-red {*/
+/*    background-color: #ff4545 !important;*/
+/*}*/
 
-.text-muted {
-    color: #adb5bd;
-}
+/*.text-muted {*/
+/*    color: #adb5bd;*/
+/*}*/
 
-.text_lorem{
-    color: #e0ffff !important;
-}
+/*.text_lorem{*/
+/*    color: #e0ffff !important;*/
+/*}*/
 
 #errorMessage {
     padding: 20px;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login/Sign Up</title>
+    <title>Login</title>
     <style>
         <%@ include file="/styles/login.css" %>
     </style>
@@ -30,7 +30,7 @@
             <div class="form-card col-lg-6 bg-gray bg-gradient">
                 <div class="tab-content d-flex justify-content-center w-100" id="formTabContent">
                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                        <form action="/login" method="post" class="needs-validation" novalidate>
+                        <form action="${pageContext.request.contextPath}/login" method="post" class="needs-validation" novalidate>
                             <input type="hidden" name="action" value="signin">
                             <h1 style="text-align: center">Login</h1>
 
@@ -42,10 +42,7 @@
                             <label for="password_signin" class="form-label">Password</label>
                             <input type="password" name="password" id="password_signin" value="${requestScope.password}" placeholder="Password" class="form-control" required>
 
-                            <div class="d-flex align-items-start">
-                                <input type="checkbox" name="rememberMe" id="rememberMe" class="checkboxBtn">
-                                <label for="rememberMe" class="w-100">Remember sign in?</label>
-                            </div>
+
                             <% String invalidCredential = (String) request.getAttribute("invalidCredential"); %>
                             <% if (invalidCredential != null) { %>
                             <div id="loginError" class="w-100 border border-1 border-danger rounded-pill text-light p-1 text-center bg-transparent mt-2">
@@ -58,7 +55,7 @@
                         </form>
                     </div>
                     <div class="tab-pane fade w-75" id="signup" role="tabpanel" aria-labelledby="signup-tab">
-                        <form action="/login" method="post">
+                        <form action="${pageContext.request.contextPath}/login" method="post">
                             <input type="hidden" name="action" value="signup">
                             <h1 style="text-align: center">Sign Up</h1>
 
@@ -71,8 +68,10 @@
                             <input type="email" name="email" id="email_signup" placeholder="Email" required>
                             <label for="password_signup">Password</label>
                             <input type="password" name="password" id="password_signup" placeholder="Password" required>
-                            <label for="confirmPassword_signup">Confirm your password</label>
-                            <input type="password" name="confirmPassword" id="confirmPassword_signup" placeholder="Confirm Password" required>
+                            <label for="address">Address</label>
+                            <input type="text" name="address" id="address" placeholder="Address" required>
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" name="phone" id="phone" placeholder="Phone number" required>
 
                             <div class="d-flex align-items-start">
                                 <input type="checkbox" name="isAdmin" id="isAdmin" class="checkboxBtn">
