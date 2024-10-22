@@ -1,7 +1,7 @@
-<%@ page import="java.util.*, javax.servlet.http.*" %>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--<%@ page import="java.util.*, javax.servlet.http.*" %>--%>
+<%--<%@ page import="jakarta.servlet.http.HttpSession" %>--%>
+<%--<%@ page import="java.util.List, com.chaunhat.fluffyfunicular.model.Product" %>--%>
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 
 <header>
     <div class="navbar bg-dark bg-gradient bg-opacity-75">

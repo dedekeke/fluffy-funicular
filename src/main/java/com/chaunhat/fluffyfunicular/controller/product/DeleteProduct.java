@@ -1,5 +1,6 @@
 package com.chaunhat.fluffyfunicular.controller.product;
 
+import com.chaunhat.fluffyfunicular.service.ProductService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 
 @WebServlet(name = "DeleteProduct", value = "/deleteProduct")
 public class DeleteProduct extends HttpServlet {
-    private final ProductController controller = new ProductController();
+    private final ProductService controller = new ProductService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productIdString = request.getParameter("productId");

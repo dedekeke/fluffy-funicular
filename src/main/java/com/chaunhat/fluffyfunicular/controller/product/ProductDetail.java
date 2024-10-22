@@ -1,6 +1,7 @@
 package com.chaunhat.fluffyfunicular.controller.product;
 
 import com.chaunhat.fluffyfunicular.model.Product;
+import com.chaunhat.fluffyfunicular.service.ProductService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 @WebServlet("/productDetail")
 public class ProductDetail extends HttpServlet {
 
-    private ProductController controller = new ProductController();
+    private ProductService controller = new ProductService();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productIdStr = request.getParameter("id");

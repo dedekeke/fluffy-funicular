@@ -4,13 +4,18 @@ import com.chaunhat.fluffyfunicular.model.Cart;
 import com.chaunhat.fluffyfunicular.model.Orders;
 import com.chaunhat.fluffyfunicular.model.Product;
 import com.chaunhat.fluffyfunicular.util.DatabaseUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
+@Repository
 public class OrdersDAO {
+    @Autowired
+    private DatabaseUtility databaseUtility;
     public void insertOrder(Orders order, Cart cart) throws Exception {
         try {
-            Connection conn = DatabaseUtility.getConnection();
+            Connection conn = databaseUtility.getConnection();
 
             String sqlO = "INSERT INTO \"Orders\" (user_mail, order_status, order_date, order_discount_code, order_address) VALUES(?,?,?,?,?)";
             PreparedStatement stmt_Order = conn.prepareStatement(sqlO,  PreparedStatement.RETURN_GENERATED_KEYS);

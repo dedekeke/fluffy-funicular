@@ -1,15 +1,19 @@
-package com.chaunhat.fluffyfunicular.controller.product;
+package com.chaunhat.fluffyfunicular.service;
 
 import com.chaunhat.fluffyfunicular.dao.ProductDAO;
 import com.chaunhat.fluffyfunicular.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProductController {
-    private static final ProductDAO productDAO = new ProductDAO();
+@Service
+public class ProductService {
+    @Autowired
+    private ProductDAO productDAO;
 
-    public static List<Product> getAllProducts() throws SQLException {
+    public List<Product> getAllProducts() throws SQLException {
         return productDAO.getAllProducts();
     }
 
@@ -17,7 +21,7 @@ public class ProductController {
         return productDAO.getProductById(id);
     }
 
-    public static List<Product> searchProducts(String name) throws SQLException {
+    public List<Product> searchProducts(String name) throws SQLException {
         return productDAO.searchProduct(name);
     }
 

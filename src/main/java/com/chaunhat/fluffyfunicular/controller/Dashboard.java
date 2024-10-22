@@ -1,8 +1,7 @@
 package com.chaunhat.fluffyfunicular.controller;
 
-import com.chaunhat.fluffyfunicular.controller.product.ProductController;
+import com.chaunhat.fluffyfunicular.service.ProductService;
 import com.chaunhat.fluffyfunicular.model.Product;
-import com.chaunhat.fluffyfunicular.dao.ProductDAO;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,16 +9,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "DashboardServlet", value = "/dashboard")
 public class Dashboard extends HttpServlet {
-    private final ProductController controller = new ProductController();
+    @Autowired
+    private ProductService controller;
     protected String name;
     protected String description;
     protected double price;
@@ -56,7 +55,7 @@ public class Dashboard extends HttpServlet {
 
         if (isLoggedIn != null && isLoggedIn && isAdmin) {
             try {
-                List<Product> products = ProductController.getAllProducts();
+                List<Product> products = controller.getAllProducts();
                 request.setAttribute("products", products);
                 request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
             } catch (Exception e) {

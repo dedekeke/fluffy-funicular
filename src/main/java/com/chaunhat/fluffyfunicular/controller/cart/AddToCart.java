@@ -1,6 +1,6 @@
 package com.chaunhat.fluffyfunicular.controller.cart;
 
-import com.chaunhat.fluffyfunicular.controller.product.ProductController;
+import com.chaunhat.fluffyfunicular.service.ProductService;
 import com.chaunhat.fluffyfunicular.model.Product;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @WebServlet(name = "AddToCart", value = "/addToCart")
 public class AddToCart extends HttpServlet {
-    private ProductController controller = new ProductController();
+    private ProductService controller = new ProductService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();

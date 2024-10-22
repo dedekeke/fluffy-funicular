@@ -1,6 +1,7 @@
 package com.chaunhat.fluffyfunicular.controller.product;
 
 import com.chaunhat.fluffyfunicular.model.Product;
+import com.chaunhat.fluffyfunicular.service.ProductService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 @WebServlet(name = "UpdateProduct", value = "/updateProduct")
 public class UpdateProduct extends HttpServlet {
 
-    private final ProductController controller = new ProductController(); // Assuming you have a ProductController
+    private final ProductService controller = new ProductService(); // Assuming you have a ProductController
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve the product details from the form
