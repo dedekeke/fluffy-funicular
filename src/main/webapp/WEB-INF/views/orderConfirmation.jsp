@@ -13,7 +13,7 @@
 </head>
 <body data-bs-theme="dark">
 
-<%@ include file="header.jsp" %>
+<%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/header.jsp" %>
 
 <div class="container my-5 p-5" style="min-height: 500px">
     <h2 class="text-center">Your order is being processed</h2>
@@ -30,7 +30,7 @@
     <a href="/">Back to shopping</a>
 </div>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

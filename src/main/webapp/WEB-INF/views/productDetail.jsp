@@ -18,7 +18,7 @@
   </style>
 </head>
 <body data-bs-theme="dark">
-<%@ include file="header.jsp" %>
+<%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/header.jsp" %>
 
 <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
 <% String infoMessage = (String) request.getAttribute("infoMessage"); %>
@@ -54,7 +54,7 @@
   </div>
 </div>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

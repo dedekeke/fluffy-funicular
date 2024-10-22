@@ -5,14 +5,14 @@
 <html>
 <head>
     <title>Search Results</title>
-    <%@ include file="includes.jsp" %>
+    <%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/includes.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
 <% List<Product> products = (List<Product>) request.getAttribute("results"); %>
-<%@ include file="header.jsp" %>
+<%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/header.jsp" %>
 
 <div class="container mt-5 p-5" style="min-height: 500px">
     <h2 class="mb-4">Search Results</h2>
@@ -70,7 +70,7 @@
     </nav>
 </div>
 
-<%@ include file="footer.jsp" %>
+<%@ include file="../../../../../out/artifacts/prj321_asm1_war_exploded/footer.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

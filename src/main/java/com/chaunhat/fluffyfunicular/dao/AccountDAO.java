@@ -3,17 +3,22 @@ package com.chaunhat.fluffyfunicular.dao;
 import com.chaunhat.fluffyfunicular.model.Account;
 import com.chaunhat.fluffyfunicular.util.DatabaseUtility;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Repository
 public class AccountDAO {
+    @Autowired
+    private DatabaseUtility databaseUtility;
     public Account getUserByEmailAndPassword(String userEmail, String password) throws SQLException {
         Account user = null;
         String sql = "SELECT * FROM \"Account\" WHERE user_mail = ? AND password = ?";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, userEmail);
             stmt.setString(2, password);
@@ -29,7 +34,7 @@ public class AccountDAO {
     public Account getUserByEmail(String email) {
         Account user = null;
         String sql = "SELECT * FROM \"Account\" WHERE user_mail = ?";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
 
@@ -42,7 +47,7 @@ public class AccountDAO {
 
     public boolean insertAccount(Account newAccount) {
         String sql = "INSERT INTO \"Account\" (user_name, user_mail, password, account_role, user_address, user_phone) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, newAccount.name());
             stmt.setString(2, newAccount.email());

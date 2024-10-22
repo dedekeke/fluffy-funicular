@@ -3,6 +3,8 @@ package com.chaunhat.fluffyfunicular.dao;
 import com.chaunhat.fluffyfunicular.model.Product;
 import com.chaunhat.fluffyfunicular.util.DatabaseUtility;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +13,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ProductDAO {
+    @Autowired
+    private DatabaseUtility databaseUtility;
     public Product getProductById(int id) throws SQLException {
         String sql = "SELECT * FROM \"Products\" WHERE product_id = ?";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
 
@@ -28,7 +33,7 @@ public class ProductDAO {
         String sql = "SELECT * FROM \"Products\" WHERE product_name ILIKE ?";
         List<Product> products = new ArrayList<>();
 
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%" + searchString + "%");
 
@@ -53,7 +58,7 @@ public class ProductDAO {
     public List<Product> getAllProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM \"Products\" order by product_id";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -73,7 +78,7 @@ public class ProductDAO {
 
     public int insertProduct(Product product) throws SQLException {
         String sql = "INSERT INTO \"Products\" (product_name, product_des, product_price, product_img_source, product_type, product_brand) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, product.getName());
             stmt.setString(2, product.getDescription());
@@ -98,7 +103,7 @@ public class ProductDAO {
 
     public boolean updateProduct(Product product) throws SQLException {
         String sql = "UPDATE \"Products\" SET product_name = ?, product_des = ?, product_price = ?, product_img_source = ?, product_type = ?, product_brand = ? WHERE product_id = ?";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Set the parameters for the update query
@@ -121,7 +126,7 @@ public class ProductDAO {
 
     public boolean deleteProduct(int productId) {
         String sql = "DELETE FROM \"Products\" WHERE product_id = ?";
-        try (Connection conn = DatabaseUtility.getConnection();
+        try (Connection conn = databaseUtility.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, productId);
             int affectedRows = stmt.executeUpdate();

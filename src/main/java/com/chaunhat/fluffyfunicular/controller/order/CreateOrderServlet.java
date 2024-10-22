@@ -2,6 +2,7 @@ package com.chaunhat.fluffyfunicular.controller.order;
 
 import com.chaunhat.fluffyfunicular.model.Account;
 import com.chaunhat.fluffyfunicular.model.Product;
+import com.chaunhat.fluffyfunicular.service.AccountService;
 import com.chaunhat.fluffyfunicular.util.DatabaseUtility;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,6 +10,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.IOException;
 import java.sql.*;
@@ -18,6 +21,11 @@ import java.util.List;
 @WebServlet(name = "CreateOrder",value = "/createOrder")
 public class CreateOrderServlet extends HttpServlet {
     private static final int status = 1;
+    @Autowired
+    private DatabaseUtility databaseUtility;
+    @Autowired
+    private AccountService accountService;
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -33,7 +41,7 @@ public class CreateOrderServlet extends HttpServlet {
 
 
         try {
-            user = Account.getAccountByEmail(userEmail);
+            user = accountService.getAccountByEmail(userEmail);
             if (user == null || userEmail == null) {
                 response.sendRedirect("/login");
             }
@@ -50,7 +58,7 @@ public class CreateOrderServlet extends HttpServlet {
         int orderId = 0;
 
         try {
-            Connection conn = DatabaseUtility.getConnection();
+            Connection conn = databaseUtility.getConnection();
             PreparedStatement orderStmt = conn.prepareStatement(
                     "INSERT INTO \"Orders\" (user_mail, order_status, order_date, order_address) VALUES (?, ?, ?, ?) RETURNING order_id"
             );
