@@ -21,10 +21,9 @@ public class LandingPage {
     public String showLandingPage(Model model) {
         try {
             List<Product> products = productService.getAllProducts();
-            model.addAttribute("products", products);  // Add products to the model for the view
-            return "landing";  // Return the logical view name (assumes a landing.jsp page)
+            model.addAttribute("products", products);
+            return "landing";
         } catch (Exception e) {
-            // Handle exceptions and potentially add an error message to the model
             model.addAttribute("errorMessage", "Error retrieving products");
             System.out.println(e.getMessage());
             return null;

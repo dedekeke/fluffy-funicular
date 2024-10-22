@@ -27,7 +27,6 @@ public class Dashboard extends HttpServlet {
     protected String brand;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Add products
         name = request.getParameter("name");
         description = request.getParameter("description");
         price = Double.parseDouble(request.getParameter("price"));
